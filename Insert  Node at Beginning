@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node* prev;
+    struct Node* next;
+} Node;
+
+int main() {
+    Node* head = (Node*)malloc(sizeof(Node));
+    Node* second = (Node*)malloc(sizeof(Node));
+    Node* third = (Node*)malloc(sizeof(Node));
+
+    if (head != NULL && second != NULL && third != NULL) {
+        head->data = 10;
+        head->prev = NULL;
+        head->next = second;
+
+        second->data = 20;
+        second->prev = head;
+        second->next = third;
+
+        third->data = 30;
+        third->prev = second;
+        third->next = NULL;
+        Node* newNode = (Node*)malloc(sizeof(Node));
+        if (newNode == NULL) {
+            printf("Memory Allocation Failed for new node.\n");
+            return 1;
+        }
+        newNode->data = 5;
+        newNode->prev = NULL;
+        newNode->next = head;
+        head->prev = newNode;
+        head = newNode;
+    } else {
+        printf("Memory Allocation Failed.\n");
+        return 1;
+    }
+    printf("Linked List: ");
+    Node* current = head;
+    while (current != NULL) {
+        printf("%d ", current->data);
+        current = current->next;
+    }
+    printf("\n");
+    Node* temp;
+    while (head != NULL) {
+        temp = head;
+        head = head->next;
+        free(temp);
+    }
+
+    return 0;
+}
